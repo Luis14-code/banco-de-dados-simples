@@ -48,7 +48,9 @@ def adicionar_curso_professor(cursor):
 def associar_aluno_curso(cursor, id_aluno, id_curso, id_professor):
     comando = """
         INSERT INTO curso_aluno (
-            fk_aluno_id_aluno, fk_curso_professor__id_curso, fk_curso_professor__id_professor
+            fk_aluno_id_aluno,
+            fk_id_curso,
+            fk_id_professor
         ) VALUES (%s, %s, %s)
     """
     cursor.execute(comando, (id_aluno, id_curso, id_professor))
