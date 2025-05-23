@@ -1,4 +1,8 @@
+from flask import Flask, render_template, request, redirect, flash
 import psycopg2
+
+app = Flask(__name__)
+app.secret_key = "chave_secreta"  # Importante para flash
 
 def conectar():
     return psycopg2.connect(
@@ -8,75 +12,82 @@ def conectar():
         password="luis14"
     )
 
-def adicionar_aluno(cursor):
-    nome = input("Nome do aluno: ")
-    numero = input("Número do aluno: ")
-    email = input("Email do aluno: ")
-    cpf = input("CPF do aluno: ")
-    id_aluno = int(input("ID do aluno: "))
-    cidade = input("Cidade do aluno: ")
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    if request.method == 'POST':
+        conn = None
+        cursor = None
+        try:
+            # Pegando os dados do form
+            nome = request.form.get('nome')
+            numero = request.form.get('numero')
+            email = request.form.get('email')
+            cpf = request.form.get('cpf')
+            id_aluno = int(request.form.get('id_aluno'))
+            cidade = request.form.get('cidade')
 
-    comando = """
-        INSERT INTO aluno (nome, numero, email, cpf, id_aluno, cidade)
-        VALUES (%s, %s, %s, %s, %s, %s)
-    """
-    cursor.execute(comando, (nome, numero, email, cpf, id_aluno, cidade))
-    return id_aluno
+            id_curso = int(request.form.get('id_curso'))
+            nome_curso = request.form.get('nome_curso')
+            email_professor = request.form.get('email_professor')
+            cidade_professor = request.form.get('cidade_professor')
+            id_professor = int(request.form.get('id_professor'))
+            nome_professor = request.form.get('nome_professor')
+            cpf_professor = request.form.get('cpf_professor')
+            numero_professor = request.form.get('numero_professor')
 
-def adicionar_curso_professor(cursor):
-    id_curso = int(input("ID do curso: "))
-    nome_curso = input("Nome do curso: ")
-    email_professor = input("Email do professor: ")
-    cidade_professor = input("Cidade do professor: ")
-    id_professor = int(input("ID do professor: "))
-    nome_professor = input("Nome do professor: ")
-    cpf_professor = input("CPF do professor: ")
-    numero_professor = input("Número do professor: ")
+            print("Dados recebidos:", nome, numero, email, cpf, id_aluno, cidade)
+            print("Curso e professor:", id_curso, nome_curso, email_professor, cidade_professor,
+                  id_professor, nome_professor, cpf_professor, numero_professor)
 
-    comando = """
-        INSERT INTO curso_professor_ (
-            id_curso, nome_curso, email_professor, cidade_professor,
-            id_professor, nome_professor, cpf_professor, numero_professor
-        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-    """
-    cursor.execute(comando, (
-        id_curso, nome_curso, email_professor, cidade_professor,
-        id_professor, nome_professor, cpf_professor, numero_professor
-    ))
-    return id_curso, id_professor
+            conn = conectar()
+            cursor = conn.cursor()
 
-def associar_aluno_curso(cursor, id_aluno, id_curso, id_professor):
-    comando = """
-        INSERT INTO curso_aluno (
-            fk_aluno_id_aluno,
-            fk_id_curso,
-            fk_id_professor
-        ) VALUES (%s, %s, %s)
-    """
-    cursor.execute(comando, (id_aluno, id_curso, id_professor))
+            # Inserir aluno
+            cursor.execute("""
+                INSERT INTO aluno (nome, numero, email, cpf, id_aluno, cidade)
+                VALUES (%s, %s, %s, %s, %s, %s)
+            """, (nome, numero, email, cpf, id_aluno, cidade))
 
-def main():
-    try:
-        conexao = conectar()
-        cursor = conexao.cursor()
+            # Inserir curso e professor - usando nomes consistentes com formulário
+            cursor.execute("""
+                INSERT INTO curso_professor_ (
+                    id_curso, nome_curso, email_professor, cidade_professor,
+                    id_professor, nome_professor, cpf_professor, numero_professor
+                ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+            """, (
+                id_curso, nome_curso, email_professor, cidade_professor,
+                id_professor, nome_professor, cpf_professor, numero_professor
+            ))
 
-        id_aluno = adicionar_aluno(cursor)
-        id_curso, id_professor = adicionar_curso_professor(cursor)
-        associar_aluno_curso(cursor, id_aluno, id_curso, id_professor)
+            # Associar aluno ao curso
+            cursor.execute("""
+                INSERT INTO curso_aluno (
+                    fk_aluno_id_aluno,
+                    fk_id_curso,
+                    fk_id_professor
+                ) VALUES (%s, %s, %s)
+            """, (id_aluno, id_curso, id_professor))
 
-        conexao.commit()
-        print("Dados inseridos com sucesso!")
+            conn.commit()
+            flash("Dados inseridos com sucesso!", "success")
+            print("Dados inseridos com sucesso!")
 
-    except Exception as e:
-        print(f"Erro: {e}")
-        if conexao:
-            conexao.rollback()
+        except Exception as e:
+            print("Erro ao inserir dados:", e)
+            if conn:
+                conn.rollback()
+            flash(f"Erro ao inserir: {e}", "danger")
 
-    finally:
-        if cursor:
-            cursor.close()
-        if conexao:
-            conexao.close()
+        finally:
+            if cursor:
+                cursor.close()
+            if conn:
+                conn.close()
 
-if __name__ == "__main__":
-    main()
+        return redirect('/')
+
+    return render_template('index.html')
+
+
+if __name__ == '__main__':
+    app.run(debug=True)

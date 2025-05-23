@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro de Aluno e Curso</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Cadastro de Aluno e Curso</h1>
+
+        
+
+        <form method="POST">
+
+    <fieldset class="box">
+        <legend>Aluno</legend>
+        <input type="text" name="nome" placeholder="Nome do aluno" required>
+        <input type="text" name="numero" placeholder="Número do aluno" required>
+        <input type="email" name="email" placeholder="Email do aluno" required>
+        <input type="text" name="cpf" placeholder="CPF do aluno" required>
+        <input type="number" name="id_aluno" placeholder="ID do aluno" required>
+        <input type="text" name="cidade" placeholder="Cidade do aluno" required>
+    </fieldset>
+
+    <fieldset class="box">
+        <legend>Curso</legend>
+        <input type="number" name="id_curso" placeholder="ID do curso" required>
+        <input type="text" name="nome_curso" placeholder="Nome do curso" required>
+    </fieldset>
+
+    <fieldset class="box">
+        <legend>Professor</legend>
+        <input type="email" name="email_professor" placeholder="Email do professor" required>
+        <input type="text" name="cidade_professor" placeholder="Cidade do professor" required>
+        <input type="number" name="id_professor" placeholder="ID do professor" required>
+        <input type="text" name="nome_professor" placeholder="Nome do professor" required>
+        <input type="text" name="cpf_professor" placeholder="CPF do professor" required>
+        <input type="text" name="numero_professor" placeholder="Número do professor" required>
+    </fieldset>
+
+    <button type="submit">Cadastrar</button>
+</form>
+
+    </div>
+</body>
+</html>
