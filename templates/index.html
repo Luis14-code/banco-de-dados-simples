@@ -1,47 +1,79 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Cadastro de Aluno e Curso</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Cadastro de Aluno, Curso e Professor</title>
+    <link rel="stylesheet" href="static/styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Cadastro de Aluno e Curso</h1>
+  <div class="container">
+    <h1>Formulário de Cadastro</h1>
 
-        
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="flash {{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
 
-        <form method="POST">
+    <form method="POST">
+        <fieldset>
+            <legend>Dados do Aluno</legend>
+            
+            <label for="id_aluno">ID do Aluno:</label>
+            <input type="number" name="id_aluno" id="id_aluno" required>
 
-    <fieldset class="box">
-        <legend>Aluno</legend>
-        <input type="text" name="nome" placeholder="Nome do aluno" required>
-        <input type="text" name="numero" placeholder="Número do aluno" required>
-        <input type="email" name="email" placeholder="Email do aluno" required>
-        <input type="text" name="cpf" placeholder="CPF do aluno" required>
-        <input type="number" name="id_aluno" placeholder="ID do aluno" required>
-        <input type="text" name="cidade" placeholder="Cidade do aluno" required>
-    </fieldset>
+            <label for="nome">Nome:</label>
+            <input type="text" name="nome" id="nome" required>
 
-    <fieldset class="box">
-        <legend>Curso</legend>
-        <input type="number" name="id_curso" placeholder="ID do curso" required>
-        <input type="text" name="nome_curso" placeholder="Nome do curso" required>
-    </fieldset>
+            <label for="numero">Número:</label>
+            <input type="text" name="numero" id="numero" required>
 
-    <fieldset class="box">
-        <legend>Professor</legend>
-        <input type="email" name="email_professor" placeholder="Email do professor" required>
-        <input type="text" name="cidade_professor" placeholder="Cidade do professor" required>
-        <input type="number" name="id_professor" placeholder="ID do professor" required>
-        <input type="text" name="nome_professor" placeholder="Nome do professor" required>
-        <input type="text" name="cpf_professor" placeholder="CPF do professor" required>
-        <input type="text" name="numero_professor" placeholder="Número do professor" required>
-    </fieldset>
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" required>
 
-    <button type="submit">Cadastrar</button>
-</form>
+            <label for="cpf">CPF:</label>
+            <input type="text" name="cpf" id="cpf" maxlength="11" required>
 
-    </div>
+            <label for="cidade">Cidade:</label>
+            <input type="text" name="cidade" id="cidade" required>
+        </fieldset>
+
+        <fieldset>
+            <legend>Dados do Curso</legend>
+
+            <label for="id_curso">ID do Curso:</label>
+            <input type="number" name="id_curso" id="id_curso" required>
+
+            <label for="nome_curso">Nome do Curso:</label>
+            <input type="text" name="nome_curso" id="nome_curso" required>
+        </fieldset>
+
+        <fieldset>
+            <legend>Dados do Professor</legend>
+
+            <label for="id_professor">ID do Professor:</label>
+            <input type="number" name="id_professor" id="id_professor" required>
+
+            <label for="nome_professor">Nome:</label>
+            <input type="text" name="nome_professor" id="nome_professor" required>
+
+            <label for="cpf_professor">CPF:</label>
+            <input type="text" name="cpf_professor" id="cpf_professor" maxlength="11" required>
+
+            <label for="numero_professor">Número:</label>
+            <input type="text" name="numero_professor" id="numero_professor" required>
+
+            <label for="email_professor">Email:</label>
+            <input type="email" name="email_professor" id="email_professor" required>
+
+            <label for="cidade_professor">Cidade:</label>
+            <input type="text" name="cidade_professor" id="cidade_professor" required>
+        </fieldset>
+
+        <button type="submit">Enviar</button>
+    </form>
+  </div>
 </body>
 </html>

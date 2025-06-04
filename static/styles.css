@@ -1,71 +1,122 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f7f7f7;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #eef2f7;
     margin: 0;
     padding: 30px;
+    color: #333;
 }
 
 .container {
-    max-width: 800px;
+    max-width: 900px;
     margin: auto;
-    background-color: white;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
+    font-size: 2em;
+    color: #000000;
 }
 
 form {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 30px;
 }
 
-fieldset.box {
-    border: 2px solid #ccc;
-    padding: 20px;
-    border-radius: 8px;
-    background-color: #fafafa;
+fieldset {
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    padding: 25px;
+    background-color: #f9f9f9;
 }
 
 legend {
     font-weight: bold;
-    font-size: 1.1em;
+    font-size: 1.2em;
     padding: 0 10px;
+    color: #007bff;
+}
+
+label {
+    margin-top: 15px;
+    font-weight: 500;
+    display: block;
 }
 
 input {
     width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-    border: 1px solid #bbb;
-    border-radius: 5px;
+    padding: 10px 12px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
     font-size: 1em;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+input:focus {
+    border-color: #007bff;
+    outline: none;
 }
 
 button {
-    padding: 12px;
+    padding: 14px 20px;
     background-color: #007bff;
     color: white;
     font-size: 1.1em;
     border: none;
-    border-radius: 6px;
+    border-radius: 8px;
     cursor: pointer;
     transition: background 0.3s ease;
+    align-self: center;
+    width: 200px;
 }
 
 button:hover {
     background-color: #0056b3;
 }
 
-.alert.success {
-    color: green;
+.flash {
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-weight: 500;
+    text-align: center;
 }
 
-.alert.danger {
-    color: red;
+.flash.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.flash.danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+@media (min-width: 600px) {
+    fieldset {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    label, input {
+        grid-column: span 2;
+    }
+
+    label:nth-of-type(odd), input:nth-of-type(odd) {
+        grid-column: span 1;
+    }
+
+    label:nth-of-type(even), input:nth-of-type(even) {
+        grid-column: span 1;
+    }
 }
